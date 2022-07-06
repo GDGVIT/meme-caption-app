@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
@@ -17,6 +18,7 @@ import java.io.File
 
 private lateinit var photoFile: File
 private const val FILE_NAME = "photo.jpg"
+private lateinit var uri: Uri
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +60,11 @@ class MainActivity : AppCompatActivity() {
             startActivityForResult(intent, 4)
         }
 
+        makeBtn.setOnClickListener {
+            val intent = Intent(this, MemeActivity::class.java)
+            intent.putExtra("uri", uri.toString())
+            startActivity(intent)
+        }
 
     }
 
@@ -69,9 +76,11 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(requestCode == 1 && resultCode == Activity.RESULT_OK){
             photoIV.setImageURI(data?.data)
+            uri = data?.data!!
         }else if(requestCode == 4 && resultCode == Activity.RESULT_OK){
             val img = BitmapFactory.decodeFile(photoFile.absolutePath)
             photoIV.setImageBitmap(img)
+            uri = Uri.parse(photoFile.absolutePath)
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
