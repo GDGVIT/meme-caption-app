@@ -1,4 +1,4 @@
-package com.example.memerai
+package com.dscvit.memecaption
 
 import android.content.Context
 import android.graphics.Typeface

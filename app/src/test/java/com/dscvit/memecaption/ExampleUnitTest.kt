@@ -1,4 +1,4 @@
-package com.example.memerai
+package com.dscvit.memecaption
 
 import org.junit.Test
 

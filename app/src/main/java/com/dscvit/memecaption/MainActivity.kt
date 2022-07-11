@@ -1,4 +1,4 @@
-package com.example.memerai
+package com.dscvit.memecaption
 
 import android.Manifest
 import android.app.Activity
@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import androidx.activity.result.ActivityResult
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import kotlinx.android.synthetic.main.activity_main.*
@@ -55,7 +54,7 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             photoFile = getPhotoFile(FILE_NAME)
 
-            val fileProvider = FileProvider.getUriForFile(this, "com.example.fileprovider", photoFile)
+            val fileProvider = FileProvider.getUriForFile(this, "com.dscvit.fileprovider", photoFile)
             intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider)
             startActivityForResult(intent, 4)
         }
