@@ -21,14 +21,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.loader.content.CursorLoader
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.launch
-import okhttp3.*
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -40,7 +33,6 @@ import java.io.IOException
 private lateinit var photoFile: File
 private const val FILE_NAME = "photo.jpg"
 private lateinit var uri: Uri
-private var part_image: String? = null
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,9 +63,9 @@ class MainActivity : AppCompatActivity() {
 
         makeBtn.setOnClickListener {
 
-            if(photoIV.drawable == null){
+            if (photoIV.drawable == null) {
                 Toast.makeText(this, "Please select an Image", Toast.LENGTH_SHORT).show()
-            }else{
+            } else {
                 uploadImage()
             }
             val intent = Intent(this, MemeActivity::class.java)
@@ -90,19 +82,19 @@ class MainActivity : AppCompatActivity() {
 
         //to base64
         val stream = ByteArrayOutputStream()
-        val bitmap : Bitmap = drawable.bitmap
+        val bitmap: Bitmap = drawable.bitmap
 
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
         val image = stream.toByteArray()
         val base64String = Base64.encodeToString(image, Base64.DEFAULT)
 
         val call: Call<String> = Instance.api.uploadImage(base64String)
-        call.enqueue(object : Callback<String>{
+        call.enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
-                if(response.isSuccessful && response.body() != null){
+                if (response.isSuccessful && response.body() != null) {
                     Log.d("base64Success", response.code().toString())
                     Log.d("base64Success", base64String)
-                }else{
+                } else {
                     Log.d("base64Fail", response.code().toString())
                 }
             }
@@ -174,22 +166,7 @@ class MainActivity : AppCompatActivity() {
             //gallery
             // photoIV.setImageURI(data?.data)
             uri = data?.data!!
-
-            val imageProjection = arrayOf<String>(MediaStore.Images.Media.DATA)
-            val cursor: Cursor? = contentResolver.query(uri, imageProjection, null, null, null)
-            if (cursor != null) {
-                cursor.moveToFirst()
-                var indexImage: Int = cursor.getColumnIndex(imageProjection[0])
-                part_image = cursor.getString(indexImage)
-                var bitmap: Bitmap? = null
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, uri)
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                }
-                photoIV.setImageBitmap(bitmap)
-            }
-
+            photoIV.setImageURI(uri)
 
         } else if (requestCode == 4 && resultCode == Activity.RESULT_OK) {
             //camera
