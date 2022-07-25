@@ -1,16 +1,24 @@
 package com.dscvit.memecaption
 
-import okhttp3.MultipartBody
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 
+
 interface MemerAIApi {
+
+    //gets the caption
     @GET("/get")
-    suspend fun getCaption() : Response<DataClass>
+    suspend fun getCaption(): Response<DataClass>
 
-    @Multipart
+
+    //base 64
+    //post image to api
+    @FormUrlEncoded
     @POST("/upload")
-    suspend fun postImage(@Part body: MultipartBody.Part) : Response<DataClass>
+    fun uploadImage(
+        @Field("image") image: String
+    ): Call<String>
 
-    //TODO: post the image to the api
+
 }

@@ -25,7 +25,7 @@ class UploadStreamRequestBody(
             while (inputStream.read(buffer).also { read = it } != -1) {
                 sink.write(buffer, 0, read)
                 uploaded += read
-                onUploadProgress((100*uploaded/contentLength).toInt())
+                onUploadProgress((100 * uploaded / contentLength).toInt())
             }
         }
     }

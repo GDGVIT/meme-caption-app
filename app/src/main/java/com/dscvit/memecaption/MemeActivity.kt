@@ -27,10 +27,11 @@ class MemeActivity : AppCompatActivity() {
         uri = Uri.parse(uriStr)
         memeIV.setImageURI(uri)
 
-        captionTV.setOnClickListener{
+        captionTV.setOnClickListener {
             captionET.requestFocus()
             captionET.isFocusableInTouchMode = true
-            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val inputMethodManager =
+                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.showSoftInput(captionET, InputMethodManager.SHOW_FORCED)
         }
 
@@ -52,7 +53,7 @@ class MemeActivity : AppCompatActivity() {
 
         //text style drop down
         val textStyles = resources.getStringArray(R.array.textStyle)
-        val arrayAdapter = ArrayAdapter(this,R.layout.textstyledropdown_item, textStyles  )
+        val arrayAdapter = ArrayAdapter(this, R.layout.textstyledropdown_item, textStyles)
         textStyleTV.setAdapter(arrayAdapter)
 
         //set text appearance
@@ -64,9 +65,9 @@ class MemeActivity : AppCompatActivity() {
                     italicCount = 0
                     boldItalicCount = 0
 
-                    if(boldCount % 2 == 0){
+                    if (boldCount % 2 == 0) {
                         captionTV.setTypeface(null, Typeface.BOLD)
-                    }else{
+                    } else {
                         captionTV.setTypeface(null, Typeface.NORMAL)
                     }
                     boldCount++
@@ -76,9 +77,9 @@ class MemeActivity : AppCompatActivity() {
                     boldCount = 0
                     boldItalicCount = 0
 
-                    if(italicCount % 2 == 0){
+                    if (italicCount % 2 == 0) {
                         captionTV.setTypeface(null, Typeface.ITALIC)
-                    }else{
+                    } else {
                         captionTV.setTypeface(null, Typeface.NORMAL)
                     }
                     italicCount++
@@ -87,18 +88,15 @@ class MemeActivity : AppCompatActivity() {
                     boldCount = 0
                     italicCount = 0
 
-                    if(boldItalicCount % 2 == 0){
+                    if (boldItalicCount % 2 == 0) {
                         captionTV.setTypeface(null, Typeface.BOLD_ITALIC)
-                    }else{
+                    } else {
                         captionTV.setTypeface(null, Typeface.NORMAL)
                     }
 
                     boldItalicCount++
                 }
             }
-
-
-
 
 
         }
