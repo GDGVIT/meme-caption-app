@@ -6,15 +6,12 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.provider.Settings
-import android.util.Base64
-import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -24,17 +21,8 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.launch
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.ResponseBody
-import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.InputStream
 
 
 private lateinit var photoFile: File
@@ -72,14 +60,10 @@ class MainActivity : AppCompatActivity() {
         makeBtn.setOnClickListener {
 
             if (photoIV.drawable == null) {
-                Toast.makeText(this, "Please select an Image", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "chaina", Toast.LENGTH_SHORT).show()
             } else {
 
-                //file
                 upload()
-
-                //base64
-                //uploadBase64()
                 val intent = Intent(this, MemeActivity::class.java)
                 intent.putExtra("uri", uri.toString())
                 startActivity(intent)
@@ -87,50 +71,6 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-    }
-
-
-    private fun uploadBase64() {
-        //base64
-        val base64String = changeToBase64()
-//        val paramObject = JSONObject()
-//        paramObject.put("file", "data:image/jpeg;base64,$base64String")
-//        //Instance.api.uploadImageBase64(paramObject.toString())
-//        val addImage: Call<okhttp3.Response> = Instance.api.uploadImageBase64(paramObject.toString())
-
-//        val paramObject = JSONObject()
-//        paramObject.put("file", "data:image/jpeg;base64,$base64String")
-//        Log.d("send", paramObject.toString())
-//        Log.d("send", base64String)
-
-        val byteArray = base64String.toByteArray(Charsets.UTF_8)
-        Log.d("utf", byteArray.toString())
-        val call: Call<String> = Instance.api.uploadImageBase64(byteArray.toString())
-
-        call.enqueue(object : Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                if (response.isSuccessful && response.body() != null) {
-                    Log.d("responseSuccess", response.code().toString())
-                } else {
-                    Log.d("responseFailed", response.code().toString())
-                }
-            }
-
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                Log.d("fail", "failed")
-            }
-
-        })
-    }
-
-    private fun changeToBase64(): String {
-        //drawable
-        val drawable = photoIV.drawable as BitmapDrawable
-        val stream = ByteArrayOutputStream()
-        val bitmap: Bitmap = drawable.bitmap
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 30, stream)
-        val img = stream.toByteArray()
-        return Base64.encodeToString(img, Base64.DEFAULT)
     }
 
 
@@ -217,15 +157,18 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
             //gallery
-            // photoIV.setImageURI(data?.data)
             uri = data?.data!!
             photoIV.setImageURI(uri)
 
         } else if (requestCode == 4 && resultCode == Activity.RESULT_OK) {
             //camera
             val img = BitmapFactory.decodeFile(photoFile.absolutePath)
-            photoIV.setImageBitmap(img)
-            uri = Uri.parse(photoFile.absolutePath)
+            val bytes = ByteArrayOutputStream()
+            img.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+            val path: String =
+                MediaStore.Images.Media.insertImage(contentResolver, img, "Title", null)
+            uri = Uri.parse(path)
+            photoIV.setImageURI(uri)
         }
         super.onActivityResult(requestCode, resultCode, data)
     }

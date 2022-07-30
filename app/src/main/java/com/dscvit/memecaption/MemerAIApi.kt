@@ -12,17 +12,6 @@ import java.io.File
 
 interface MemerAIApi {
 
-    //base 64
-    @Headers(
-        "Accept: application/json"
-    )
-    @FormUrlEncoded
-    @POST("encoded")
-    fun uploadImageBase64(
-        @Field("data") data: String
-        // @Query("data") data: String
-    ): Call<String>
-
     //file
     @Multipart
     @POST("image/")
@@ -30,11 +19,6 @@ interface MemerAIApi {
         @Part data: MultipartBody.Part
     )
 
-//    @Multipart
-//    @POST("image")
-//    suspend fun upload(
-//        @Part file: MultipartBody.Part
-//    ): Response<DataClass>
 
 
 }
