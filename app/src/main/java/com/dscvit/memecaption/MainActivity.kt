@@ -73,7 +73,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
     private fun getPath(uri: Uri?): String? {
         val projection = arrayOf(MediaStore.Images.Media.DATA)
         val cursor = contentResolver.query(uri!!, projection, null, null, null) ?: return null
@@ -85,7 +84,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun upload() {
-        //file
         var file = File(cacheDir, "myImage.jpg")
         file.createNewFile()
         file = getPath(uri)?.let { File(it) }!!
@@ -98,7 +96,6 @@ class MainActivity : AppCompatActivity() {
             repository.uploadFile(file)
         }
     }
-
 
     private fun permissions() {
         //gallery permissions
@@ -148,7 +145,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     private fun getPhotoFile(fileName: String): File {
         val storageDirectory = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile(fileName, ".jpg", storageDirectory)
@@ -172,7 +168,6 @@ class MainActivity : AppCompatActivity() {
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
-
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
