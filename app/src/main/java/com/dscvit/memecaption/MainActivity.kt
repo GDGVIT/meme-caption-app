@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
@@ -17,17 +16,25 @@ import android.provider.Settings
 import android.util.Base64
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.lifecycle.lifecycleScope
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.ResponseBody
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.IOException
+import java.io.InputStream
 
 
 private lateinit var photoFile: File
@@ -35,6 +42,7 @@ private const val FILE_NAME = "photo.jpg"
 private lateinit var uri: Uri
 
 class MainActivity : AppCompatActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -66,44 +74,89 @@ class MainActivity : AppCompatActivity() {
             if (photoIV.drawable == null) {
                 Toast.makeText(this, "Please select an Image", Toast.LENGTH_SHORT).show()
             } else {
-                uploadImage()
+
+                //file
+                upload()
+
+                //base64
+                //uploadBase64()
+                val intent = Intent(this, MemeActivity::class.java)
+                intent.putExtra("uri", uri.toString())
+                startActivity(intent)
             }
-            val intent = Intent(this, MemeActivity::class.java)
-            intent.putExtra("uri", uri.toString())
-            startActivity(intent)
+
         }
 
     }
 
-    private fun uploadImage() {
-        //https://demonuts.com/android-upload-image-to-server-using-retrofit/
-        //to bitmap
-        val drawable = photoIV.drawable as BitmapDrawable
 
-        //to base64
-        val stream = ByteArrayOutputStream()
-        val bitmap: Bitmap = drawable.bitmap
+    private fun uploadBase64() {
+        //base64
+        val base64String = changeToBase64()
+//        val paramObject = JSONObject()
+//        paramObject.put("file", "data:image/jpeg;base64,$base64String")
+//        //Instance.api.uploadImageBase64(paramObject.toString())
+//        val addImage: Call<okhttp3.Response> = Instance.api.uploadImageBase64(paramObject.toString())
 
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-        val image = stream.toByteArray()
-        val base64String = Base64.encodeToString(image, Base64.DEFAULT)
+//        val paramObject = JSONObject()
+//        paramObject.put("file", "data:image/jpeg;base64,$base64String")
+//        Log.d("send", paramObject.toString())
+//        Log.d("send", base64String)
 
-        val call: Call<String> = Instance.api.uploadImage(base64String)
+        val byteArray = base64String.toByteArray(Charsets.UTF_8)
+        Log.d("utf", byteArray.toString())
+        val call: Call<String> = Instance.api.uploadImageBase64(byteArray.toString())
+
         call.enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 if (response.isSuccessful && response.body() != null) {
-                    Log.d("base64Success", response.code().toString())
-                    Log.d("base64Success", base64String)
+                    Log.d("responseSuccess", response.code().toString())
                 } else {
-                    Log.d("base64Fail", response.code().toString())
+                    Log.d("responseFailed", response.code().toString())
                 }
             }
 
             override fun onFailure(call: Call<String>, t: Throwable) {
-                Toast.makeText(this@MainActivity, "Failed", Toast.LENGTH_SHORT).show()
+                Log.d("fail", "failed")
             }
 
         })
+    }
+
+    private fun changeToBase64(): String {
+        //drawable
+        val drawable = photoIV.drawable as BitmapDrawable
+        val stream = ByteArrayOutputStream()
+        val bitmap: Bitmap = drawable.bitmap
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 30, stream)
+        val img = stream.toByteArray()
+        return Base64.encodeToString(img, Base64.DEFAULT)
+    }
+
+
+    private fun getPath(uri: Uri?): String? {
+        val projection = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor = contentResolver.query(uri!!, projection, null, null, null) ?: return null
+        val columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        cursor.moveToFirst()
+        val s = cursor.getString(columnIndex)
+        cursor.close()
+        return s
+    }
+
+    private fun upload() {
+        //file
+        var file = File(cacheDir, "myImage.jpg")
+        file.createNewFile()
+        file = getPath(uri)?.let { File(it) }!!
+        uploadFile(file)
+    }
+
+    private fun uploadFile(file: File) {
+        val repository = FileRepository()
+        lifecycleScope.launch {
+            repository.uploadFile(file)
+        }
     }
 
 

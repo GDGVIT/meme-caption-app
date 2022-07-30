@@ -1,6 +1,7 @@
 package com.dscvit.memecaption
 
+import java.io.File
+
 data class DataClass(
-    //val detail: String
-    val file: String
+    val data: File
 )
