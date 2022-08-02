@@ -3,10 +3,10 @@ package com.dscvit.memecaption
 import android.content.Context
 import android.graphics.Typeface
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_meme.*
 
 
