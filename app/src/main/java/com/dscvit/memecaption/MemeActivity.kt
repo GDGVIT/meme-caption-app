@@ -1,9 +1,12 @@
 package com.dscvit.memecaption
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
+import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +21,12 @@ class MemeActivity : AppCompatActivity() {
     private var italicCount = 0
     private var boldItalicCount = 0
 
+    var pDownX = 0
+    var pDownY = 0
+    var pUpX = 0
+    var pUpY = 0
+
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_meme)
@@ -39,10 +48,29 @@ class MemeActivity : AppCompatActivity() {
             captionTV.text = captionET.text.toString()
         }
 
+        captionTV.setOnTouchListener { v, event ->
+            when (event.action) {
+
+                MotionEvent.ACTION_DOWN -> {
+                    Log.d("Action Down", "down")
+                }
+
+                MotionEvent.ACTION_MOVE -> {
+                    v.x = event.rawX - captionTV.width / 2.0f
+                    v.y = event.rawY - captionTV.height / 2.0f
+                }
+
+            }
+            true
+        }
+
+
+
         applyTextStyle()
 
 
     }
+
 
     override fun onResume() {
         applyTextStyle()
