@@ -21,10 +21,6 @@ class MemeActivity : AppCompatActivity() {
     private var italicCount = 0
     private var boldItalicCount = 0
 
-    var pDownX = 0
-    var pDownY = 0
-    var pUpX = 0
-    var pUpY = 0
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,8 +52,9 @@ class MemeActivity : AppCompatActivity() {
                 }
 
                 MotionEvent.ACTION_MOVE -> {
-                    v.x = event.rawX - captionTV.width / 2.0f
-                    v.y = event.rawY - captionTV.height / 2.0f
+                    val xCorr: Float = event.rawX - relativeImageLayout.x - captionTV.width / 2.0f
+                    v.x = xCorr
+                    v.y = event.rawY - relativeImageLayout.y - captionTV.height / 2.0f - 220f
                 }
 
             }
