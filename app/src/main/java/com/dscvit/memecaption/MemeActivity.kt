@@ -10,6 +10,7 @@ import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.activity_meme.*
 
 
@@ -44,6 +45,12 @@ class MemeActivity : AppCompatActivity() {
             captionTV.text = captionET.text.toString()
         }
 
+        resetCapBtn.setOnClickListener {
+            captionTV.isVisible = true
+            captionTV.x = memeIV.x
+            captionTV.y =  memeIV.y
+        }
+
         captionTV.setOnTouchListener { v, event ->
             when (event.action) {
 
@@ -55,17 +62,27 @@ class MemeActivity : AppCompatActivity() {
                     val xCorr: Float = event.rawX - relativeImageLayout.x - captionTV.width / 2.0f
                     v.x = xCorr
                     v.y = event.rawY - relativeImageLayout.y - captionTV.height / 2.0f - 220f
+
+                    //makes the caption disappear when it goes out of boundary
+                    if(xCorr > memeIV.width){
+                        captionTV.isVisible = false
+                    }else if(xCorr < memeIV.x){
+                        captionTV.isVisible = false
+                    }
+
+                    if(v.y > memeIV.height){
+                        captionTV.isVisible = false
+                    }else if(v.y < memeIV.y){
+                        captionTV.isVisible = false
+                    }
+
+
                 }
 
             }
             true
         }
-
-
-
         applyTextStyle()
-
-
     }
 
 

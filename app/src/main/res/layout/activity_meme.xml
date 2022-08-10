@@ -28,6 +28,19 @@
         android:text="@string/add_caption"
         android:textAllCaps="false" />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/resetCapBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textStyle"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="166dp"
+        android:layout_toRightOf="@id/addBtn"
+        android:text="@string/reset_caption"
+        android:textAllCaps="false" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textStyle"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
@@ -64,6 +77,7 @@
             android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
             android:adjustViewBounds="true"
+            android:layout_marginBottom="20dp"
             android:contentDescription="@string/image"
             app:srcCompat="@drawable/ic_launcher_background" />
 
