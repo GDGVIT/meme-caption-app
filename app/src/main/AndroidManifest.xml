@@ -20,7 +20,10 @@
         android:theme="@style/Theme.Memerai"
         tools:targetApi="31">
         <activity
-            android:name="com.dscvit.memecaption.MemeActivity"
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MemeActivity"
             android:exported="false" />
 
         <provider
@@ -34,7 +37,7 @@
         </provider>
 
         <activity
-            android:name="com.dscvit.memecaption.MainActivity"
+            android:name=".HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

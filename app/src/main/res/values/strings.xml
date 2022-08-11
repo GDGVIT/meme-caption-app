@@ -11,6 +11,11 @@
     <string name="sample_text">sample Text</string>
     <string name="reset">Reset</string>
     <string name="reset_caption">Reset Caption</string>
+    <string name="logo">logo</string>
+    <string name="get_started">Get Started</string>
+    <string name="made_with_love_by_gdsc_vit">Made with love by GDSC VIT</string>
+    <string name="love_sign">love_sign</string>
+
 
     <string-array name="textStyle">
         <item>Bold</item>

@@ -1,4 +1,4 @@
-package com.dscvit.memecaption
+package com.dscvit.memecaption.api
 
 import okhttp3.MultipartBody
 import retrofit2.http.Multipart

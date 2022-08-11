@@ -1,4 +1,4 @@
-package com.dscvit.memecaption
+package com.dscvit.memecaption.api
 
 import java.io.File
 

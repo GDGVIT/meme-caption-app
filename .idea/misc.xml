@@ -3,6 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/capture_icon.xml" value="0.2995" />
+        <entry key="app/src/main/res/drawable/ic_baseline_arrow_forward_24.xml" value="0.2995" />
+        <entry key="app/src/main/res/drawable/start.xml" value="0.2995" />
+        <entry key="app/src/main/res/drawable/vector.xml" value="0.2995" />
+        <entry key="app/src/main/res/layout/activity_home.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_meme.xml" value="0.33" />
         <entry key="app/src/main/res/layout/textstyledropdown_item.xml" value="0.35052083333333334" />

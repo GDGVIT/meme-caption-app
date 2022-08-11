@@ -1,4 +1,4 @@
-package com.dscvit.memecaption
+package com.dscvit.memecaption.api
 
 import android.util.Log
 import android.webkit.MimeTypeMap

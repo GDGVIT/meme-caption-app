@@ -48,7 +48,7 @@ class MemeActivity : AppCompatActivity() {
         resetCapBtn.setOnClickListener {
             captionTV.isVisible = true
             captionTV.x = memeIV.x
-            captionTV.y =  memeIV.y
+            captionTV.y = memeIV.y
         }
 
         captionTV.setOnTouchListener { v, event ->
@@ -64,15 +64,15 @@ class MemeActivity : AppCompatActivity() {
                     v.y = event.rawY - relativeImageLayout.y - captionTV.height / 2.0f - 220f
 
                     //makes the caption disappear when it goes out of boundary
-                    if(xCorr > memeIV.width){
+                    if (xCorr > memeIV.width) {
                         captionTV.isVisible = false
-                    }else if(xCorr < memeIV.x){
+                    } else if (xCorr < memeIV.x) {
                         captionTV.isVisible = false
                     }
 
-                    if(v.y > memeIV.height){
+                    if (v.y > memeIV.height) {
                         captionTV.isVisible = false
-                    }else if(v.y < memeIV.y){
+                    } else if (v.y < memeIV.y) {
                         captionTV.isVisible = false
                     }
 
