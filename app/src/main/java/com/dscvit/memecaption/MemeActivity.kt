@@ -1,14 +1,12 @@
 package com.dscvit.memecaption
 
 import android.annotation.SuppressLint
-import android.content.Context
+import android.content.Intent
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
-import android.view.MotionEvent
-import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.activity_meme.*
@@ -27,68 +25,46 @@ class MemeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_meme)
+        supportActionBar?.hide()
 
         //get uri of the image from main activity
         val uriStr = intent.getStringExtra("uri")
         uri = Uri.parse(uriStr)
         memeIV.setImageURI(uri)
 
-        captionTV.setOnClickListener {
-            captionET.requestFocus()
-            captionET.isFocusableInTouchMode = true
-            val inputMethodManager =
-                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.showSoftInput(captionET, InputMethodManager.SHOW_FORCED)
+        bottomLL.isVisible = true
+        captionLayout.isVisible = false
+        formatLayout.isVisible = false
+
+        backBtn.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finishAffinity()
         }
 
-        addBtn.setOnClickListener {
-            captionTV.text = captionET.text.toString()
-        }
-
-        resetCapBtn.setOnClickListener {
-            captionTV.isVisible = true
-            captionTV.x = memeIV.x
-            captionTV.y = memeIV.y
-        }
-
-        captionTV.setOnTouchListener { v, event ->
-            when (event.action) {
-
-                MotionEvent.ACTION_DOWN -> {
-                    Log.d("Action Down", "down")
-                }
-
-                MotionEvent.ACTION_MOVE -> {
-                    val xCorr: Float = event.rawX - relativeImageLayout.x - captionTV.width / 2.0f
-                    v.x = xCorr
-                    v.y = event.rawY - relativeImageLayout.y - captionTV.height / 2.0f - 220f
-
-                    //makes the caption disappear when it goes out of boundary
-                    if (xCorr > memeIV.width) {
-                        captionTV.isVisible = false
-                    } else if (xCorr < memeIV.x) {
-                        captionTV.isVisible = false
-                    }
-
-                    if (v.y > memeIV.height) {
-                        captionTV.isVisible = false
-                    } else if (v.y < memeIV.y) {
-                        captionTV.isVisible = false
-                    }
-
-
-                }
-
+        captionBtn.setOnClickListener {
+            bottomLL.isVisible = false
+            captionLayout.isVisible = true
+            captionET.setText(captionTV.text, TextView.BufferType.EDITABLE)
+            backCaptionBtn.setOnClickListener {
+                captionTV.text = captionET.text
+                captionLayout.isVisible = false
+                bottomLL.isVisible = true
             }
-            true
+
         }
-        applyTextStyle()
-    }
 
+        formatTextBtn.setOnClickListener {
+            bottomLL.isVisible = false
+            formatLayout.isVisible = true
+            applyTextStyle()
+            closeFormatTextBtn.setOnClickListener {
+                captionTV.textSize = fontET.text.toString().toFloat()
+                formatLayout.isVisible = false
+                bottomLL.isVisible = true
+            }
+        }
 
-    override fun onResume() {
-        applyTextStyle()
-        super.onResume()
     }
 
     private fun applyTextStyle() {
@@ -142,7 +118,30 @@ class MemeActivity : AppCompatActivity() {
 
 
         }
+    }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finishAffinity()
+    }
 
+    override fun onResume() {
+        super.onResume()
+        memeIV.setImageURI(uri)
+        bottomLL.isVisible = true
+        captionLayout.isVisible = false
+        formatLayout.isVisible = false
+        supportActionBar?.hide()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        memeIV.setImageURI(uri)
+        bottomLL.isVisible = true
+        captionLayout.isVisible = false
+        formatLayout.isVisible = false
+        supportActionBar?.hide()
     }
 }

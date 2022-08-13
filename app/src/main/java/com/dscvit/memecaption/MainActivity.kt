@@ -36,6 +36,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        supportActionBar?.hide()
+
         uploadBtn.isEnabled = false
         captureBtn.isEnabled = false
 
@@ -181,5 +183,15 @@ class MainActivity : AppCompatActivity() {
         } else if (requestCode == 3 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             captureBtn.isEnabled = true
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        supportActionBar?.hide()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        supportActionBar?.hide()
     }
 }
