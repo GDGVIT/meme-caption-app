@@ -14,6 +14,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.TextView
@@ -73,6 +74,13 @@ class MemeActivity : AppCompatActivity() {
                 getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.showSoftInput(captionET, InputMethodManager.SHOW_FORCED)
 
+            captionET.setOnEditorActionListener { _, i, _ ->
+                if (i == EditorInfo.IME_ACTION_DONE) {
+                    captionTV.text = captionET.text
+                }
+                false
+            }
+
             backCaptionBtn.setOnClickListener {
                 captionTV.text = captionET.text
                 captionLayout.isVisible = false
@@ -91,6 +99,13 @@ class MemeActivity : AppCompatActivity() {
                 getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.showSoftInput(captionET, InputMethodManager.SHOW_FORCED)
 
+            captionET.setOnEditorActionListener { _, i, _ ->
+                if (i == EditorInfo.IME_ACTION_DONE) {
+                    captionTV.text = captionET.text
+                }
+                false
+            }
+
             backCaptionBtn.setOnClickListener {
                 captionTV.text = captionET.text
                 captionLayout.isVisible = false
@@ -103,6 +118,14 @@ class MemeActivity : AppCompatActivity() {
             bottomLL.isVisible = false
             formatLayout.isVisible = true
             applyTextStyle()
+
+            fontET.setOnEditorActionListener { _, i, _ ->
+                if (i == EditorInfo.IME_ACTION_DONE) {
+                    captionTV.textSize = fontET.text.toString().toFloat()
+                }
+                false
+            }
+
             closeFormatTextBtn.setOnClickListener {
                 captionTV.textSize = fontET.text.toString().toFloat()
                 formatLayout.isVisible = false
