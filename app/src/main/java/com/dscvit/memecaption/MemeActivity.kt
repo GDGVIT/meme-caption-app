@@ -1,15 +1,30 @@
 package com.dscvit.memecaption
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Typeface
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.activity_meme.*
+import java.io.File
+import java.io.FileOutputStream
+import java.io.OutputStream
 
 
 private lateinit var uri: Uri
@@ -26,6 +41,11 @@ class MemeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_meme)
         supportActionBar?.hide()
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+            1
+        )
 
         //get uri of the image from main activity
         val uriStr = intent.getStringExtra("uri")
@@ -42,10 +62,35 @@ class MemeActivity : AppCompatActivity() {
             finishAffinity()
         }
 
+        captionTV.setOnClickListener {
+            bottomLL.isVisible = false
+            captionLayout.isVisible = true
+            captionET.setText(captionTV.text, TextView.BufferType.EDITABLE)
+
+            captionET.requestFocus()
+            captionET.isFocusableInTouchMode = true
+            val inputMethodManager =
+                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.showSoftInput(captionET, InputMethodManager.SHOW_FORCED)
+
+            backCaptionBtn.setOnClickListener {
+                captionTV.text = captionET.text
+                captionLayout.isVisible = false
+                bottomLL.isVisible = true
+            }
+        }
+
         captionBtn.setOnClickListener {
             bottomLL.isVisible = false
             captionLayout.isVisible = true
             captionET.setText(captionTV.text, TextView.BufferType.EDITABLE)
+
+            captionET.requestFocus()
+            captionET.isFocusableInTouchMode = true
+            val inputMethodManager =
+                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.showSoftInput(captionET, InputMethodManager.SHOW_FORCED)
+
             backCaptionBtn.setOnClickListener {
                 captionTV.text = captionET.text
                 captionLayout.isVisible = false
@@ -65,6 +110,62 @@ class MemeActivity : AppCompatActivity() {
             }
         }
 
+        saveBtn.setOnClickListener {
+            val bitmap = getScreenShotFromView(memeCard)
+
+            if (bitmap != null) {
+                saveMediaToStorage(bitmap)
+            }
+        }
+
+    }
+
+
+    private fun getScreenShotFromView(v: View): Bitmap? {
+        var screenshot: Bitmap? = null
+        try {
+            screenshot =
+                Bitmap.createBitmap(v.measuredWidth, v.measuredHeight, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(screenshot)
+            v.draw(canvas)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return screenshot
+    }
+
+    private fun saveMediaToStorage(bitmap: Bitmap) {
+        val fileName = "${System.currentTimeMillis()}.jpg"
+
+        var fos: OutputStream? = null
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            this.contentResolver?.also { contentResolver ->
+                val contentValues = ContentValues().apply {
+                    put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
+                    put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
+                    put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+                }
+
+                val imageUri: Uri? = contentResolver.insert(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    contentValues
+                )
+
+                fos = imageUri?.let { contentResolver.openOutputStream(it) }
+            }
+        } else {
+            val imagesDir =
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+            val image = File(imagesDir, fileName)
+            fos = FileOutputStream(image)
+        }
+
+        fos?.use {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
+            Toast.makeText(this, "Added to your gallery", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun applyTextStyle() {

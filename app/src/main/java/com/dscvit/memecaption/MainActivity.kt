@@ -12,7 +12,6 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.provider.Settings
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -38,9 +37,6 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-        uploadBtn.isEnabled = false
-        captureBtn.isEnabled = false
-
         //permissions
         permissions()
         image()
@@ -61,16 +57,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         makeBtn.setOnClickListener {
-
-            if (photoIV.drawable == null) {
-                Toast.makeText(this, "chaina", Toast.LENGTH_SHORT).show()
-            } else {
-
-                upload()
-                val intent = Intent(this, MemeActivity::class.java)
-                intent.putExtra("uri", uri.toString())
-                startActivity(intent)
-            }
+            upload()
+            val intent = Intent(this, MemeActivity::class.java)
+            intent.putExtra("uri", uri.toString())
+            startActivity(intent)
 
         }
 
@@ -112,8 +102,6 @@ class MainActivity : AppCompatActivity() {
                 arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
                 2
             )
-        } else {
-            uploadBtn.isEnabled = true
         }
 
         //camera permissions
@@ -157,7 +145,7 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
             //gallery
             uri = data?.data!!
-            photoIV.setImageURI(uri)
+
 
         } else if (requestCode == 4 && resultCode == Activity.RESULT_OK) {
             //camera
@@ -167,7 +155,7 @@ class MainActivity : AppCompatActivity() {
             val path: String =
                 MediaStore.Images.Media.insertImage(contentResolver, img, "Title", null)
             uri = Uri.parse(path)
-            photoIV.setImageURI(uri)
+
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
