@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.provider.Settings
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -27,15 +28,13 @@ import java.io.File
 
 private lateinit var photoFile: File
 private const val FILE_NAME = "photo.jpg"
-private lateinit var uri: Uri
+private  var uri: Uri? = null
 
 class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        supportActionBar?.hide()
 
         //permissions
         permissions()
@@ -57,10 +56,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         makeBtn.setOnClickListener {
-            upload()
-            val intent = Intent(this, MemeActivity::class.java)
-            intent.putExtra("uri", uri.toString())
-            startActivity(intent)
+            if(uri == null){
+                Toast.makeText(this, "Please select an image", Toast.LENGTH_SHORT).show()
+            }else{
+                upload()
+                val intent = Intent(this, MemeActivity::class.java)
+                intent.putExtra("uri", uri.toString())
+                startActivity(intent)
+            }
+
 
         }
 

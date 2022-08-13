@@ -19,11 +19,12 @@
         <entry key="app/src/main/res/drawable/logo.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/rectangle.xml" value="0.2965" />
         <entry key="app/src/main/res/drawable/save.xml" value="0.2965" />
+        <entry key="app/src/main/res/drawable/spash_logo.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/start.xml" value="0.2995" />
         <entry key="app/src/main/res/drawable/text_color.xml" value="0.2515" />
         <entry key="app/src/main/res/drawable/vector.xml" value="0.2995" />
         <entry key="app/src/main/res/layout/activity_camera.xml" value="0.3494791666666667" />
-        <entry key="app/src/main/res/layout/activity_home.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_home.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_meme.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_trial.xml" value="0.3494791666666667" />
