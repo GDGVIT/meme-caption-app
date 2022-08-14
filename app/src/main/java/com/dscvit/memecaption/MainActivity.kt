@@ -12,7 +12,6 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.provider.Settings
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -28,7 +27,7 @@ import java.io.File
 
 private lateinit var photoFile: File
 private const val FILE_NAME = "photo.jpg"
-private  var uri: Uri? = null
+private var uri: Uri? = null
 
 class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
@@ -53,19 +52,6 @@ class MainActivity : AppCompatActivity() {
             finish()
             startActivity(intent)
             return
-        }
-
-        makeBtn.setOnClickListener {
-            if(uri == null){
-                Toast.makeText(this, "Please select an image", Toast.LENGTH_SHORT).show()
-            }else{
-                upload()
-                val intent = Intent(this, MemeActivity::class.java)
-                intent.putExtra("uri", uri.toString())
-                startActivity(intent)
-            }
-
-
         }
 
     }
@@ -150,6 +136,11 @@ class MainActivity : AppCompatActivity() {
             //gallery
             uri = data?.data!!
 
+            upload()
+            val intent = Intent(this, MemeActivity::class.java)
+            intent.putExtra("uri", uri.toString())
+            startActivity(intent)
+
 
         } else if (requestCode == 4 && resultCode == Activity.RESULT_OK) {
             //camera
@@ -159,6 +150,11 @@ class MainActivity : AppCompatActivity() {
             val path: String =
                 MediaStore.Images.Media.insertImage(contentResolver, img, "Title", null)
             uri = Uri.parse(path)
+
+            upload()
+            val intent = Intent(this, MemeActivity::class.java)
+            intent.putExtra("uri", uri.toString())
+            startActivity(intent)
 
         }
         super.onActivityResult(requestCode, resultCode, data)
