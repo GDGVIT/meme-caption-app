@@ -56,34 +56,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/captureBtn" />
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/uploadBtn">
-
-        <TextView
-            android:id="@+id/madeWithLove"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/inter"
-            android:text="@string/made_with_love_by_gdsc_vit"
-            android:textColor="@color/grey" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_toEndOf="@id/madeWithLove"
-            android:contentDescription="@string/love_sign"
-            android:paddingTop="2.69dp"
-            android:src="@drawable/vector" />
-    </RelativeLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

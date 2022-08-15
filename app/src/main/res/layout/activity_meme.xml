@@ -2,15 +2,18 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black">
+    android:background="@color/black"
+    android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/black"
-        tools:context=".MemeActivity">
+        tools:context=".MemeActivity"
+        tools:ignore="ScrollViewSize">
 
         <RelativeLayout
             android:id="@+id/topRV"
@@ -70,15 +73,15 @@
                     android:id="@+id/captionTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="12dp"
                     android:layout_marginStart="16dp"
+                    android:layout_marginTop="12dp"
                     android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="12dp"
                     android:fontFamily="@font/inter"
-                    android:text="@string/add_a_caption"
-                    android:textColor="@color/black"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
+                    android:text="@string/add_a_caption"
+                    android:textColor="@color/black"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -94,14 +97,11 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingTop="75dp"
-            android:paddingBottom="20dp"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/memeCard"
-            app:layout_constraintVertical_bias="1.0">
+            app:layout_constraintTop_toBottomOf="@id/memeCard">
 
             <ImageView
                 android:id="@+id/captionBtn"
@@ -131,7 +131,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingTop="75dp"
-            android:paddingBottom="20dp"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -171,7 +170,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingTop="75dp"
-            android:paddingBottom="20dp"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

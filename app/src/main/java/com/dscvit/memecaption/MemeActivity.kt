@@ -49,7 +49,6 @@ class MemeActivity : AppCompatActivity() {
         )
 
 
-
         //get uri of the image from main activity
         val uriStr = intent.getStringExtra("uri")
         uri = Uri.parse(uriStr)
