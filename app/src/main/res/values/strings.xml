@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">memer.ai</string>
+    <string name="image">image</string>
+    <string name="capture">Capture</string>
+    <string name="upload">Upload</string>
+    <string name="make_a_meme">Make a meme!</string>
+    <string name="caption">Caption</string>
+    <string name="add_caption">Add Caption</string>
+    <string name="add_a_caption">Add a caption</string>
+    <string name="select_text_style">Select Text Style</string>
+    <string name="sample_text">sample Text</string>
+    <string name="reset">Reset</string>
+    <string name="reset_caption">Reset Caption</string>
+    <string name="logo">logo</string>
+    <string name="get_started">Get Started</string>
+    <string name="made_with_love_by_gdsc_vit">Made with love by GDSC VIT</string>
+    <string name="love_sign">love_sign</string>
+
+
+    <string-array name="textStyle">
+        <item>Bold</item>
+        <item>Italic</item>
+        <item>Bold-italic</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="go_back">go back</string>
+    <string name="save_image">save image</string>
+    <string name="type_your_caption_here">Type your caption here</string>
+    <string name="italic">I</string>
+    <string name="b">B</string>
+    <string name="text_size">Text Size</string>
+    <string name="done">done</string>
+    <string name="text_style">Text Style</string>
+</resources>
