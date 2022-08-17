@@ -128,7 +128,6 @@ class MemeActivity : AppCompatActivity() {
             }
 
             closeFormatTextBtn.setOnClickListener {
-                captionTV.textSize = fontET.text.toString().toFloat()
                 formatLayout.isVisible = false
                 bottomLL.isVisible = true
             }
