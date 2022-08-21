@@ -22,6 +22,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
+import com.dscvit.memecaption.api.FileRepository
 import kotlinx.android.synthetic.main.activity_meme.*
 import java.io.File
 import java.io.FileOutputStream
@@ -41,7 +42,6 @@ class MemeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_meme)
-        //supportActionBar?.hide()
         ActivityCompat.requestPermissions(
             this,
             arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
@@ -53,6 +53,11 @@ class MemeActivity : AppCompatActivity() {
         val uriStr = intent.getStringExtra("uri")
         uri = Uri.parse(uriStr)
         memeIV.setImageURI(uri)
+
+
+        FileRepository.cap.observe(this) { caption ->
+            captionTV.text = caption
+        }
 
         bottomLL.isVisible = true
         captionLayout.isVisible = false
