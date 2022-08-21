@@ -7,7 +7,7 @@ object Instance {
 
     val api: MemerAIApi by lazy {
         Retrofit.Builder()
-            .baseUrl("https://memer-ai.herokuapp.com/")
+            .baseUrl("http://20.126.107.24/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(MemerAIApi::class.java)

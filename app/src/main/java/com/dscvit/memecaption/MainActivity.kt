@@ -78,6 +78,7 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repository.uploadFile(file)
         }
+
     }
 
     private fun permissions() {
